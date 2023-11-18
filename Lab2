@@ -1,4 +1,4 @@
- java.util.*;
+import java.util.*;
 
 public class TopKFrequentNumbers {
     private static int[] numbersArray;
