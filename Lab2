@@ -1,0 +1,43 @@
+import java.util.*;
+
+public class TopKFrequentNumbers {
+    private static int[] numbersArray;
+
+    public static void setNumbersArray(int[] array) {
+        numbersArray = array;
+    }
+
+    public static void findTopKFrequentNumbers(int k) {
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        for (int number : numbersArray) {
+            frequencyMap.put(number, frequencyMap.getOrDefault(number, 0) + 1);
+        }
+
+        PriorityQueue<Map.Entry<Integer, Integer>> maxHeap = new PriorityQueue<>(
+                (a, b) -> a.getValue() == b.getValue() ? b.getKey() - a.getKey() : b.getValue() - a.getValue());
+
+        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+            maxHeap.offer(entry);
+        }
+
+        for (int i = 0; i < k; i++) {
+            System.out.print(maxHeap.poll().getKey() + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] array1 = {3, 1, 4, 4, 5, 2, 6, 1};
+        setNumbersArray(array1);
+        int k1 = 2;
+        System.out.println("Output for array1 and k1:");
+        findTopKFrequentNumbers(k1);
+
+        System.out.println(); // Add a new line for separation
+
+        int[] array2 = {7, 10, 11, 5, 2, 5, 5, 7, 11, 8, 9};
+        setNumbersArray(array2);
+        int k2 = 4;
+        System.out.println("\nOutput for array2 and k2:");
+        findTopKFrequentNumbers(k2);
+    }
+}
