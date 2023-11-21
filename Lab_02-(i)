@@ -1,0 +1,50 @@
+import java.util.*;
+
+public class TopKFrequentNumbers {
+    private static int[] nums;
+
+    public static void main(String[] args) {
+        int[] testArray1 = {3, 1, 4, 4, 5, 2, 6, 1};
+        int k1 = 2;
+        findTopKFrequentNumbers(testArray1, k1); // Test Case 1
+
+        int[] testArray2 = {7, 10, 11, 5, 2, 5, 5, 7, 11, 8, 9};
+        int k2 = 4;
+        findTopKFrequentNumbers(testArray2, k2); // Test Case 2
+    }
+
+    public static void findTopKFrequentNumbers(int[] arr, int k) {
+        nums = arr;
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+
+        for (int num : nums) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((n1, n2) -> {
+            if (frequencyMap.get(n1).equals(frequencyMap.get(n2))) {
+                return n2 - n1;
+            }
+            return frequencyMap.get(n1) - frequencyMap.get(n2);
+        });
+
+        for (int num : frequencyMap.keySet()) {
+            minHeap.offer(num);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        while (!minHeap.isEmpty()) {
+            result.add(minHeap.poll());
+        }
+
+        Collections.reverse(result);
+        for (int num : result) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}
+
