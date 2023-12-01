@@ -1,50 +1,41 @@
 import java.util.*;
 
 public class TopKFrequentNumbers {
-    private static int[] nums;
+
+    private static int[] numbers;
 
     public static void main(String[] args) {
-        int[] testArray1 = {3, 1, 4, 4, 5, 2, 6, 1};
+        int[] arr1 = {3, 1, 4, 4, 5, 2, 6, 1};
         int k1 = 2;
-        findTopKFrequentNumbers(testArray1, k1); // Test Case 1
-
-        int[] testArray2 = {7, 10, 11, 5, 2, 5, 5, 7, 11, 8, 9};
+        findTopKFrequentNumbers(arr1, k1); // Output: 4 1
+        
+        int[] arr2 = {7, 10, 11, 5, 2, 5, 5, 7, 11, 8, 9};
         int k2 = 4;
-        findTopKFrequentNumbers(testArray2, k2); // Test Case 2
+        findTopKFrequentNumbers(arr2, k2); // Output: 5 11 7 10
     }
 
     public static void findTopKFrequentNumbers(int[] arr, int k) {
-        nums = arr;
+        numbers = arr;
         Map<Integer, Integer> frequencyMap = new HashMap<>();
-
-        for (int num : nums) {
+        
+        // Count frequencies
+        for (int num : numbers) {
             frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
         }
-
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>((n1, n2) -> {
-            if (frequencyMap.get(n1).equals(frequencyMap.get(n2))) {
-                return n2 - n1;
-            }
-            return frequencyMap.get(n1) - frequencyMap.get(n2);
-        });
-
-        for (int num : frequencyMap.keySet()) {
-            minHeap.offer(num);
-            if (minHeap.size() > k) {
-                minHeap.poll();
-            }
-        }
-
-        List<Integer> result = new ArrayList<>();
-        while (!minHeap.isEmpty()) {
-            result.add(minHeap.poll());
-        }
-
-        Collections.reverse(result);
-        for (int num : result) {
-            System.out.print(num + " ");
+        
+        // Use a priority queue to get top K frequent numbers
+        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>(
+            (a, b) -> a.getValue() == b.getValue() ? b.getKey() - a.getKey() : b.getValue() - a.getValue()
+        );
+        
+        pq.addAll(frequencyMap.entrySet());
+        
+        // Print top K frequent numbers
+        int count = 0;
+        while (count < k) {
+            System.out.print(pq.poll().getKey() + " ");
+            count++;
         }
         System.out.println();
     }
 }
-
