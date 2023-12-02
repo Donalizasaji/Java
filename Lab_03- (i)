@@ -1,0 +1,123 @@
+// Base class Employee
+public class Employee {
+    private int employeeId;
+    private String employeeName;
+    private String designation;
+
+    // Constructor
+    public Employee(int employeeId, String employeeName, String designation) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+        this.designation = designation;
+    }
+
+    // Getters and setters
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    // Method to calculate bonus
+    public double calculateBonus() {
+        // Base implementation for bonus calculation
+        return 0.0;
+    }
+
+    // Method to display employee information
+    public void displayEmployeeInfo() {
+        System.out.println("Employee ID: " + employeeId);
+        System.out.println("Employee Name: " + employeeName);
+        System.out.println("Designation: " + designation);
+    }
+}
+
+// Derived class HourlyEmployee
+public class HourlyEmployee extends Employee {
+    private double hourlyRate;
+    private int hoursWorked;
+
+    // Constructor
+    public HourlyEmployee(int employeeId, String employeeName, String designation, double hourlyRate, int hoursWorked) {
+        super(employeeId, employeeName, designation);
+        this.hourlyRate = hourlyRate;
+        this.hoursWorked = hoursWorked;
+    }
+
+    // Method to calculate weekly salary
+    public double calculateWeeklySalary() {
+        return hourlyRate * hoursWorked;
+    }
+
+    // Override the calculateBonus method
+    @Override
+    public double calculateBonus() {
+        // Custom bonus calculation for hourly employees
+        return 0.05 * calculateWeeklySalary(); // 5% of weekly salary as bonus
+    }
+}
+
+// Derived class SalariedEmployee
+public class SalariedEmployee extends Employee {
+    private double monthlySalary;
+
+    // Constructor
+    public SalariedEmployee(int employeeId, String employeeName, String designation, double monthlySalary) {
+        super(employeeId, employeeName, designation);
+        this.monthlySalary = monthlySalary;
+    }
+
+    // Method to calculate weekly salary
+    public double calculateWeeklySalary() {
+        return monthlySalary / 4; // Assuming a 4-week month
+    }
+
+    // Override the calculateBonus method
+    @Override
+    public double calculateBonus() {
+        // Custom bonus calculation for salaried employees
+        return 0.1 * monthlySalary; // 10% of monthly salary as bonus
+    }
+}
+
+// Derived class ExecutiveEmployee
+public class ExecutiveEmployee extends SalariedEmployee {
+    private double bonusPercentage;
+
+    // Constructor
+    public ExecutiveEmployee(int employeeId, String employeeName, String designation, double monthlySalary, double bonusPercentage) {
+        super(employeeId, employeeName, designation, monthlySalary);
+        this.bonusPercentage = bonusPercentage;
+    }
+
+    // Override the calculateBonus method using super keyword
+    @Override
+    public double calculateBonus() {
+        // Custom bonus calculation for executive employees
+        double baseBonus = super.calculateBonus(); // Get the bonus calculated in the SalariedEmployee class
+        return baseBonus + (bonusPercentage/100 * getMonthlySalary()); // Add the bonus percentage
+    }
+    
+    // Method to display annual earnings for executive employees
+    public double calculateAnnualEarnings() {
+        return 12 * getMonthlySalary() + calculateBonus(); // Assuming a 12-month year
+    }
+}
