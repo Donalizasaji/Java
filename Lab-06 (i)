@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-public class CoinCombination {
+public class CoinCombinations {
     public static int findTotalCoinCombinations(int[] coins, int sum) {
         int[] dp = new int[sum + 1];
         dp[0] = 1;
